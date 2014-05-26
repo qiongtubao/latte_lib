@@ -1,0 +1,11 @@
+{
+	"name":"latte_lib",
+    "version":"0.0.1",
+	"description": "latte lib",
+	"keywords": ["latte"],
+	"author": "qiongtubao ",
+    "main": "index.js",
+    "dependencies":{
+        
+    }
+}
