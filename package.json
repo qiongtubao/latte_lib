@@ -5,6 +5,10 @@
 	"keywords": ["latte"],
 	"author": "qiongtubao ",
     "main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/qiongtubao/latte_lib.git"
+	},
     "dependencies":{
         
     }
