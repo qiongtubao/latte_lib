@@ -59,12 +59,35 @@ var _require = function(parentId, module, callback) {
             return _require.original.apply(window, arguments);
     }
 };
+
+var resolve = function(parentId, moduleName) {
+    if(moduleName.charAt(0) == ".") {
+        var ps = parentId.split("/");
+        var base = ps.pop();
+        //var paths = ps.join("/");
+        var ms = moduleName.split("/");
+        var n ;
+        while((n = ms.shift())) {
+          if(n == "..") {
+            ps.pop();
+          }else if(n != "."){
+            ps.push(n);
+          }
+        }
+        return ps.join("/");
+    }
+    return moduleName;
+
+}
+
 var normalizeModule = function(parentId, moduleName) {
+    // normalize plugin requires
     if (moduleName.indexOf("!") !== -1) {
         var chunks = moduleName.split("!");
         return normalizeModule(parentId, chunks[0]) + "!" + normalizeModule(parentId, chunks[1]);
     }
-    if (moduleName.charAt(0) == ".") {
+    // normalize relative requires
+    /*if (moduleName.charAt(0) == ".") {
         var base = parentId.split("/").slice(0, -1).join("/");
         moduleName = base + "/" + moduleName;
 
@@ -72,8 +95,11 @@ var normalizeModule = function(parentId, moduleName) {
             var previous = moduleName;
             moduleName = moduleName.replace(/\/\.\//, "/").replace(/[^\/]+\/\.\.\//, "");
         }
-    }
-    return moduleName;
+    }*/
+    //console.log(parentId, moduleName);
+    name = resolve(parentId, moduleName);
+    //console.log(parentId, moduleName, name);
+    return name;
 };
 var lookup = function(parentId, moduleName) {
 
@@ -100,8 +126,16 @@ var lookup = function(parentId, moduleName) {
             _define.modules[moduleName] = exports;
             delete _define.payloads[moduleName];
         }
-        module = _define.modules[moduleName] = exports || module;
+        module = exports || module;
+        if(!module && moduleName.indexOf("/index") == -1) {
+            module = _define.modules[moduleName] = lookup(parentId, moduleName+"/index");
+        }
+
     }
+    if(!module) {
+      console.log("unload error",parentId, moduleName);
+    }
+     _define.modules[moduleName]  = module;
     return module;
 };
 
