@@ -1,15 +1,15 @@
 {
-	'name':'latte_lib',
-		'version':'0.0.5',
-	'description': 'latte lib',
-	'keywords': ['latte'],
-	'author': 'qiongtubao ',
-		'main': 'index.js',
-	'repository': {
-	'type': 'git',
-	'url': 'https://github.com/qiongtubao/latte_lib.git'
+	"name":"latte_lib",
+	"version":"0.0.5",
+	"description":"latte_lib",
+	"keywords":["latte"],
+	"author":"qiongtubao",
+	"main":"index.js",
+	"repository":{
+		"type":"git",
+		"url":"https://github.com/qiongtubao/latte_lib.git"
 	},
-    'dependencies':{
-        
-    }
+	"dependencies":{
+	}
+	
 }
