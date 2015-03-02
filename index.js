@@ -174,7 +174,4 @@ this.define = latte.define;
 latte.config = {};
 (function() {
     this.config = {};
-    this.config.lattePath = "latte/";
-    this.config.latteLibPath = "latte/lib"
-    this.config.latteImgsPath = "latte/imgs";
 }).call(latte);
