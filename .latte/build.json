@@ -1,0 +1,25 @@
+{
+	"keys": {
+
+	},
+	"commands": [
+		{
+			"command": "mergerFile",
+			"type": "js",
+			"in": ["./index.js", "./lib"],
+			"out": "./build/{{version}}/{{name}}.js"
+		},
+		{
+			"command": "miniFile",
+			"in": ["./build/{{version}}/{{name}}.js"],
+			"out": "./build/{{version}}/{{name}}.min.js"
+		},
+		{
+			"command": "mergerFile",
+			"type": "js",
+			"in": ["./build/{{version}}/{{name}}.js"],
+			"out": ["./build/{{name}}.js"]
+		}
+
+	]
+}
