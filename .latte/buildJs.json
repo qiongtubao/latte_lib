@@ -13,10 +13,15 @@
 			"out": "./build/{{version}}/{{name}}.js"
 		},
 		{
+			"command": "copy",
+			"in": ["./build/{{version}}/{{name}}.js"],
+			"out": "./build/{{name}}.js"
+		},
+		{
 			"command": "mini",
 			"type": "js",
 			"in": ["./build/{{version}}/{{name}}.js"],
-			"out": ["./build/{{name}}.js"]
+			"out": ["./build/{{name}}_min.js"]
 		}
 
 	],
