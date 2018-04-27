@@ -1,4 +1,6 @@
 var async = require('../../index.js').default.async;
+var utils = require('../../index.js').default;
+console.log(utils.nextTick);
 var expect = require('chai').expect;
 var assert = require('assert');
 var getFunctionsObject = require('./support/get_function_object');
@@ -33,7 +35,7 @@ describe('series', function () {
                 done();
             });
     });
-
+    /** 
     it('with reflect', function (done) {
         var call_order = [];
         async.series([
@@ -114,7 +116,7 @@ describe('series', function () {
                 done();
             });
     });
-
+*/
     it('no callback', function (done) {
         async.series([
             function (callback) { callback(); },
@@ -160,22 +162,23 @@ describe('series', function () {
     // Issue 10 on github: https://github.com/caolan/async/issues#issue/10
     it('falsy return values', function (done) {
         function taskFalse(callback) {
-            async.nextTick(function () {
+            utils.nextTick(function () {
+                console.log('?????');
                 callback(null, false);
             });
         }
         function taskUndefined(callback) {
-            async.nextTick(function () {
+            utils.nextTick(function () {
                 callback(null, undefined);
             });
         }
         function taskEmpty(callback) {
-            async.nextTick(function () {
+            utils.nextTick(function () {
                 callback(null);
             });
         }
         function taskNull(callback) {
-            async.nextTick(function () {
+            utils.nextTick(function () {
                 callback(null, null);
             });
         }

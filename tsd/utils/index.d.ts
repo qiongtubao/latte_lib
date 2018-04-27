@@ -1,0 +1,27 @@
+declare const _default: {
+    isWindow: boolean;
+    isNode: boolean;
+    extends: (...args: any[]) => void;
+    inherits: (...args: any[]) => void;
+    nextTick: (fn: any) => void;
+    copy: (data: any) => any;
+    isArray: any;
+    isObject: (obj: any) => boolean;
+    isArrayLike: (value: any) => boolean;
+    isNumber: (value: any) => boolean;
+    isString: (value: any) => boolean;
+    isError: (value: any) => boolean;
+    isRegExp: (value: any) => boolean;
+    isSymbol: (value: any) => boolean;
+    isFunction: (value: any) => boolean;
+    isDate: (value: any) => boolean;
+    isBoolean: (value: any) => boolean;
+    getClassName: (obj: any) => string;
+    forOwn: (object: any, iteratee: any) => void;
+    baseProperty: (key: any) => (object: any) => any;
+    jsonForEach: (data: any, iterator: any) => void;
+    last: (array: any[]) => any;
+    undefineds: (array: any[]) => any[];
+    noop: () => void;
+};
+export default _default;

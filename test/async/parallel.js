@@ -1,5 +1,5 @@
 var async = require('../../index.js').default.async;
-console.log(async);
+var utils = require('../../index.js');
 var expect = require('chai').expect;
 var assert = require('assert');
 var getFunctionsObject = require('./support/get_function_object');
@@ -83,22 +83,22 @@ describe('parallel', function () {
     // Issue 10 on github: https://github.com/caolan/async/issues#issue/10
     it('paralel falsy return values', function (done) {
         function taskFalse(callback) {
-            async.nextTick(function () {
+            utils.nextTick(function () {
                 callback(null, false);
             });
         }
         function taskUndefined(callback) {
-            async.nextTick(function () {
+            utils.nextTick(function () {
                 callback(null, undefined);
             });
         }
         function taskEmpty(callback) {
-            async.nextTick(function () {
+            utils.nextTick(function () {
                 callback(null);
             });
         }
         function taskNull(callback) {
-            async.nextTick(function () {
+            utils.nextTick(function () {
                 callback(null, null);
             });
         }
@@ -115,7 +115,7 @@ describe('parallel', function () {
         );
     });
 
-
+    /** 
     it('parallel limit', function (done) {
         var call_order = [];
         async.parallelLimit([
@@ -191,7 +191,7 @@ describe('parallel', function () {
             done();
         });
     });
-
+*/
     it('parallel call in another context @nycinvalid @nodeonly', function (done) {
         var vm = require('vm');
         var sandbox = {
@@ -212,7 +212,7 @@ describe('parallel', function () {
 
         vm.runInNewContext(fn, sandbox);
     });
-
+    /*
     it('parallel error with reflect', function (done) {
         async.parallel([
             async.reflect(function (callback) {
@@ -235,88 +235,88 @@ describe('parallel', function () {
                 done();
             });
     });
-
-    it('parallel object with reflect all (values and errors)', function (done) {
-        var tasks = {
-            one: function (callback) {
-                setTimeout(function () {
-                    callback(null, 'one');
-                }, 200);
-            },
-            two: function (callback) {
-                callback('two');
-            },
-            three: function (callback) {
-                setTimeout(function () {
-                    callback(null, 'three');
-                }, 100);
-            }
-        };
-
-        async.parallel(async.reflectAll(tasks), function (err, results) {
-            expect(results).to.eql({
-                one: { value: 'one' },
-                two: { error: 'two' },
-                three: { value: 'three' }
-            });
-            done();
-        })
-    });
-
-    it('parallel empty object with reflect all', function (done) {
-        var tasks = {};
-
-        async.parallel(async.reflectAll(tasks), function (err, results) {
-            expect(results).to.eql({});
-            done();
-        })
-    });
-
-    it('parallel empty object with reflect all (errors)', function (done) {
-        var tasks = {
-            one: function (callback) {
-                callback('one');
-            },
-            two: function (callback) {
-                callback('two');
-            },
-            three: function (callback) {
-                callback('three');
-            }
-        };
-
-        async.parallel(async.reflectAll(tasks), function (err, results) {
-            expect(results).to.eql({
-                one: { error: 'one' },
-                two: { error: 'two' },
-                three: { error: 'three' }
-            });
-            done();
-        })
-    });
-
-    it('parallel empty object with reflect all (values)', function (done) {
-        var tasks = {
-            one: function (callback) {
-                callback(null, 'one');
-            },
-            two: function (callback) {
-                callback(null, 'two');
-            },
-            three: function (callback) {
-                callback(null, 'three');
-            }
-        };
-
-        async.parallel(async.reflectAll(tasks), function (err, results) {
-            expect(results).to.eql({
-                one: { value: 'one' },
-                two: { value: 'two' },
-                three: { value: 'three' }
-            });
-            done();
-        })
-    });
+  
+     it('parallel object with reflect all (values and errors)', function (done) {
+         var tasks = {
+             one: function (callback) {
+                 setTimeout(function () {
+                     callback(null, 'one');
+                 }, 200);
+             },
+             two: function (callback) {
+                 callback('two');
+             },
+             three: function (callback) {
+                 setTimeout(function () {
+                     callback(null, 'three');
+                 }, 100);
+             }
+         };
+ 
+         async.parallel(async.reflectAll(tasks), function (err, results) {
+             expect(results).to.eql({
+                 one: { value: 'one' },
+                 two: { error: 'two' },
+                 three: { value: 'three' }
+             });
+             done();
+         })
+     });
+     
+     it('parallel empty object with reflect all', function (done) {
+         var tasks = {};
+ 
+         async.parallel(async.reflectAll(tasks), function (err, results) {
+             expect(results).to.eql({});
+             done();
+         })
+     });
+     
+     it('parallel empty object with reflect all (errors)', function (done) {
+         var tasks = {
+             one: function (callback) {
+                 callback('one');
+             },
+             two: function (callback) {
+                 callback('two');
+             },
+             three: function (callback) {
+                 callback('three');
+             }
+         };
+ 
+         async.parallel(async.reflectAll(tasks), function (err, results) {
+             expect(results).to.eql({
+                 one: { error: 'one' },
+                 two: { error: 'two' },
+                 three: { error: 'three' }
+             });
+             done();
+         })
+     });
+ 
+     it('parallel empty object with reflect all (values)', function (done) {
+         var tasks = {
+             one: function (callback) {
+                 callback(null, 'one');
+             },
+             two: function (callback) {
+                 callback(null, 'two');
+             },
+             three: function (callback) {
+                 callback(null, 'three');
+             }
+         };
+ 
+         async.parallel(async.reflectAll(tasks), function (err, results) {
+             expect(results).to.eql({
+                 one: { value: 'one' },
+                 two: { value: 'two' },
+                 three: { value: 'three' }
+             });
+             done();
+         })
+     });
 
     it('parallel does not continue replenishing after error', function (done) {
         var started = 0;
@@ -351,4 +351,5 @@ describe('parallel', function () {
             done();
         }, maxTime);
     });
+     */
 });

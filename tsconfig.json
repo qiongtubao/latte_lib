@@ -6,7 +6,9 @@
             "removeComments": true,
             "sourceMap": false,
             "outDir": "lib",
-            "moduleResolution": "node"
+            "moduleResolution": "node",
+            "declaration": true,
+            "declarationDir": "tsd"
       },
       "include": [
             "src"

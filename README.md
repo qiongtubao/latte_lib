@@ -17,3 +17,5 @@ nodejs里EventEmitter一样
 *templateJsonFormat
 *dateFormat
 
+##promise
+*promisify

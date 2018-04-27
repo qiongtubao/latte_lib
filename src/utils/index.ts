@@ -58,7 +58,7 @@ let inherits = (...args) => {
     });
   }
 }
-let nextTick = (fn: Function) => {
+let nextTick = (() => {
   if (!isNode || !(process.nextTick)) {
     if (window && typeof window.setImmediate === "function") {
       return window.setImmediate;
@@ -70,7 +70,7 @@ let nextTick = (fn: Function) => {
   } else {
     return process.nextTick;
   }
-}
+})();
 let isArray = Array.isArray.bind(Array);
 let isObject = (obj): boolean => {
   if (!obj) { return false; }
@@ -92,7 +92,7 @@ let isArrayLike = (value) => {
 let baseProperty = (key) => {
   return (object) => object == null ? undefined : object[key]
 }
-let last = (array: Array<any>): any => {
+let last = (array: any[]): any => {
   const length = array == null ? 0 : array.length
   return length ? array[length - 1] : undefined
 }
@@ -148,16 +148,25 @@ let isString = function (value) {
   const type = typeof value
   return type == 'string'
 }
+//暂时只支持一纬数组
+let undefineds = (array: Array<any>) => {
+  let map = [];
+  for (let i = 0, len = array[0]; i < len; i++) {
+    map.push(undefined);
+  }
+  return map;
+}
 
-
-
+let copy = (data) => {
+  return JSON.parse(JSON.stringify(data));
+}
 export default {
   isWindow, isNode, //env
-  extends: inherits, inherits, nextTick, //base
+  extends: inherits, inherits, nextTick, copy,//base
   isArray, isObject, isArrayLike, isNumber,
   isString, isError, isRegExp, isSymbol,
   isFunction, isDate, isBoolean, getClassName,//is Class
   forOwn, baseProperty, jsonForEach,//object
-  last,  //array
+  last, undefineds, //array
   noop
 }

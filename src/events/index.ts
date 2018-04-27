@@ -132,10 +132,9 @@ export default class EventEmitter {
       events.on("hello", fun);
       event.emit("hello")
   */
-  emit(event: string): EventEmitter {
+  emit(event: string, ...args): EventEmitter {
     this.events = this.events || {};
-    var args = [].slice.call(arguments, 1)
-      , callbacks = this.events[event];
+    let callbacks = this.events[event];
     if (callbacks) {
       callbacks = callbacks.slice(0);
       for (var i = 0, len = callbacks.length; i < len; ++i) {
@@ -150,7 +149,7 @@ export default class EventEmitter {
       @method listeners
       @public
       @param {string} event
-      @return {Array<Function>}
+      @return {Function[]}
       @example
 
         var Events = require("latte_lib").events;
@@ -160,7 +159,7 @@ export default class EventEmitter {
         };
         log(events.listeners("hello"));
   */
-  listeners(event): Array<Function> {
+  listeners(event): Function[] {
     this.events = this.events || {};
     return this.events[event] || [];
   };

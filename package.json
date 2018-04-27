@@ -13,7 +13,7 @@
 		"url": "https://github.com/qiongtubao/latte_lib.git"
 	},
 	"dependencies": {
-		"latte_lib": "*"
+		"superagent": "*"
 	},
 	"devDependencies": {
 		"@types/node": "*",

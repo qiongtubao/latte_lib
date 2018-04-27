@@ -2,7 +2,6 @@ var async = require('../../index.js').default.async;
 var expect = require('chai').expect;
 var _ = require('lodash');
 describe('auto', function () {
-
     it('basics', function (done) {
         var callOrder = [];
         async.auto({
