@@ -103,11 +103,22 @@ export function dateFormat(format, date, prefix, postfix) {
   return formatted;
 }
 
-
-export function templateStringFormat(template: string, options: object): string {
+let replace = (data, replaceStr, value) => {
+  //{! 'hello' == 'hello'?'a':'b' !}  替换  失败
+  //return data.replace(new RegExp(replaceStr, "igm"), value);
+  let runStr;
+  while (1) {
+    runStr = data;
+    data = data.replace(replaceStr, value);
+    if (data == runStr) {
+      return data;
+    }
+  }
+}
+export function templateStringFormat(template: string, options: object, prefix = "{{", postfix = "}}"): string {
   let data = template;
   for (let i in options) {
-    data = data.replace(new RegExp("{{" + i + "}}", "igm"), options[i]);
+    data = replace(data, prefix + i + postfix, options[i]);
   }
   return data;
 }

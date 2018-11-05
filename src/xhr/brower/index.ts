@@ -7,7 +7,9 @@ if (typeof window !== 'undefined') { // Browser window
   root = window;
 } else if (typeof self !== 'undefined') { // Web Worker
   root = self;
-} else { // Other environments
+} else if (typeof process !== 'undefined') { // Other environments
+  root = process;
+} else {
   console.warn("Using browser-only version of superagent in non-browser environment");
   root = this;
 }

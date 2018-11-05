@@ -50,7 +50,7 @@ export class LatteClass extends Events {
     }
     return o;
   }
-  set = (key, value, mode): SetResult => {
+  set = (key, value, mode = 0): SetResult => {
     key = key.toString();
     if (mode) {
       return this.merge(key, value);
@@ -156,7 +156,7 @@ export class LatteClass extends Events {
     };
   }
   static isLatteObject(value): boolean {
-    return false;
+    return value instanceof LatteClass;
   }
 }
 

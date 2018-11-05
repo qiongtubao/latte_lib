@@ -9,7 +9,7 @@ export declare class LatteClass extends Events {
     constructor(data: any);
     get: (key: any) => any;
     _create: (key: any[]) => any;
-    set: (key: any, value: any, mode: any) => SetResult;
+    set: (key: any, value: any, mode?: number) => SetResult;
     addChildEvent: Function;
     removeChildEvent: Function;
     toJSON: () => any;

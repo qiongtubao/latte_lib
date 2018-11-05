@@ -36,7 +36,7 @@ export default class EventEmitter {
       .push(fn);
     return this;
   };
-  addEventListener = this.on;
+
   /**
    * @desc 绑定一次性监听事件
     @method once
@@ -113,9 +113,7 @@ export default class EventEmitter {
     }
     return this;
   }
-  removeListener = this.off
-  removeAllListeners = this.off
-  removeEventListener = this.off
+
   /**
    * @desc 触发事件
     @method emit
@@ -181,9 +179,19 @@ export default class EventEmitter {
   hasEvent(event, func): boolean {
     return this.listeners(event).indexOf(func) != -1;
   }
-  hasListeners = hasListeners
-
+  hasListeners: Function;
+  removeListener: Function;
+  removeAllListeners: Function;
+  removeEventListener: Function;
+  addEventListener: Function;
 }
 
 
 
+(function () {
+  this.removeListener = this.off
+  this.removeAllListeners = this.off
+  this.removeEventListener = this.off
+  this.hasListeners = this.hasListeners;
+  this.addEventListener = this.on;
+}).call(EventEmitter.prototype);

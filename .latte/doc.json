@@ -1,25 +1,34 @@
 {
-	"paths":["lib/"],
+	"paths": [
+		"src/"
+	],
 	"outdir": "doc/",
+	"extension": ".ts",
 	"project": {
 		"name": "Project",
-		"description":"<h2>latte_build</h2><p>javascript Document.</p>",
-		"version": "{{0.0.1}}",
+		"description": "<h2>latte_build</h2><p>javascript Document.</p>",
+		"version": "0.0.1",
 		"url": "https://github.com/qiongtubao/latte_build",
 		"logo": "",
-		"navs": [{
-			"name": "Home",
-			"url":"https://github.com/qiongtubao/latte_build"
-		},{
-			"name": "Document",
-			"url": "https://github.com/qiongtubao/latte_build"
-		},{
-			"name": "About",
-			"url": "https://github.com/qiongtubao/latte_build"
-		}]
+		"navs": [
+			{
+				"name": "Home",
+				"url": "https://github.com/qiongtubao/latte_build"
+			},
+			{
+				"name": "Document",
+				"url": "https://github.com/qiongtubao/latte_build"
+			},
+			{
+				"name": "About",
+				"url": "https://github.com/qiongtubao/latte_build"
+			}
+		]
 	},
 	"demo": {
-		"link": ["http://code.jquery.com/jquery-1.11.0.min.js"],
+		"link": [
+			"http://code.jquery.com/jquery-1.11.0.min.js"
+		],
 		"paths": [],
 		"autoComplete": true
 	}

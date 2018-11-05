@@ -20,7 +20,7 @@ export default class LatteArray extends LatteClass {
     delete this.data[key];
   }
   length: number;
-  constructor(data: Array<any>) {
+  constructor(data: Array<any> = []) {
     super(data);
     this.data = [];
     this.rawData = data;
@@ -139,7 +139,17 @@ export default class LatteArray extends LatteClass {
       }
     }
   }
+  slice(start: number, end?: number) {
+    let result = new LatteArray();
+    if (start < 0) start = this.data.length + start;
+    if (!end) end = this.data.length - 1;
+    if (end < 0) end = this.data.length + end;
+    for (; start < end; start++) {
+      result.push(this.data[start]);
+    }
+    return result;
 
+  }
 
   /**
    * 只针对子对象

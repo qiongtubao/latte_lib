@@ -1,5 +1,21 @@
-let isWindow = process ? false : window ? true : false;
-let isNode = process ? true : false;
+let isWindow = (function () {
+  try {
+    if (window) {
+      return true;
+    }
+  } catch (e) {
+    return false;
+  }
+  try {
+    if (process) {
+      return false;
+    }
+  } catch (e) {
+    return true;
+  }
+  return false;
+})();
+let isNode = isWindow ? false : global.process ? true : false;
 /**
 *
 *	@method inherits
@@ -158,13 +174,22 @@ let undefineds = (array: Array<any>) => {
 }
 
 let copy = (data) => {
+  if (data == null) {
+    return null;
+  }
   return JSON.parse(JSON.stringify(data));
+}
+let isNullOrUndefined = (arg) => {
+  return arg == null;
+}
+let isNull = (arg) => {
+  return arg === null;
 }
 export default {
   isWindow, isNode, //env
   extends: inherits, inherits, nextTick, copy,//base
   isArray, isObject, isArrayLike, isNumber,
-  isString, isError, isRegExp, isSymbol,
+  isString, isError, isRegExp, isSymbol, isNull, isNullOrUndefined,
   isFunction, isDate, isBoolean, getClassName,//is Class
   forOwn, baseProperty, jsonForEach,//object
   last, undefineds, //array

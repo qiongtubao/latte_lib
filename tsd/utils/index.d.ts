@@ -13,6 +13,8 @@ declare const _default: {
     isError: (value: any) => boolean;
     isRegExp: (value: any) => boolean;
     isSymbol: (value: any) => boolean;
+    isNull: (arg: any) => boolean;
+    isNullOrUndefined: (arg: any) => boolean;
     isFunction: (value: any) => boolean;
     isDate: (value: any) => boolean;
     isBoolean: (value: any) => boolean;
