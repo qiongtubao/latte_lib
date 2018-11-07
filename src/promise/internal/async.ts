@@ -1,8 +1,9 @@
 "use strict";
 var firstLineError;
-try {throw new Error(); } catch (e) {firstLineError = e;}
+try { throw new Error(); } catch (e) { firstLineError = e; }
 var schedule = require("./schedule.js");
-var Queue = require("./queue.js");
+import Queue from "./queue"
+// var Queue = require("./queue.js");
 var util = require("./util.js");
 
 function Async() {
@@ -18,16 +19,16 @@ function Async() {
         schedule.isStatic ? schedule(this.drainQueues) : schedule;
 }
 
-Async.prototype.disableTrampolineIfNecessary = function() {
+Async.prototype.disableTrampolineIfNecessary = function () {
     if (util.hasDevTools) {
         this._trampolineEnabled = false;
     }
 };
 
-Async.prototype.enableTrampoline = function() {
+Async.prototype.enableTrampoline = function () {
     if (!this._trampolineEnabled) {
         this._trampolineEnabled = true;
-        this._schedule = function(fn) {
+        this._schedule = function (fn) {
             setTimeout(fn, 0);
         };
     }
@@ -37,17 +38,17 @@ Async.prototype.haveItemsQueued = function () {
     return this._normalQueue.length() > 0;
 };
 
-Async.prototype.throwLater = function(fn, arg) {
+Async.prototype.throwLater = function (fn, arg) {
     if (arguments.length === 1) {
         arg = fn;
         fn = function () { throw arg; };
     }
     if (typeof setTimeout !== "undefined") {
-        setTimeout(function() {
+        setTimeout(function () {
             fn(arg);
         }, 0);
     } else try {
-        this._schedule(function() {
+        this._schedule(function () {
             fn(arg);
         });
     } catch (e) {
@@ -76,14 +77,14 @@ if (!util.hasDevTools) {
     Async.prototype.settlePromises = AsyncSettlePromises;
 } else {
     if (schedule.isStatic) {
-        schedule = function(fn) { setTimeout(fn, 0); };
+        schedule = function (fn) { setTimeout(fn, 0); };
     }
     Async.prototype.invokeLater = function (fn, receiver, arg) {
         if (this._trampolineEnabled) {
             AsyncInvokeLater.call(this, fn, receiver, arg);
         } else {
-            this._schedule(function() {
-                setTimeout(function() {
+            this._schedule(function () {
+                setTimeout(function () {
                     fn.call(receiver, arg);
                 }, 100);
             });
@@ -94,17 +95,17 @@ if (!util.hasDevTools) {
         if (this._trampolineEnabled) {
             AsyncInvoke.call(this, fn, receiver, arg);
         } else {
-            this._schedule(function() {
+            this._schedule(function () {
                 fn.call(receiver, arg);
             });
         }
     };
 
-    Async.prototype.settlePromises = function(promise) {
+    Async.prototype.settlePromises = function (promise) {
         if (this._trampolineEnabled) {
             AsyncSettlePromises.call(this, promise);
         } else {
-            this._schedule(function() {
+            this._schedule(function () {
                 promise._settlePromises();
             });
         }
@@ -116,7 +117,7 @@ Async.prototype.invokeFirst = function (fn, receiver, arg) {
     this._queueTick();
 };
 
-Async.prototype._drainQueue = function(queue) {
+Async.prototype._drainQueue = function (queue) {
     while (queue.length() > 0) {
         var fn = queue.shift();
         if (typeof fn !== "function") {

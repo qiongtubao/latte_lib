@@ -1,15 +1,1 @@
-declare var es5: any;
-declare var Objectfreeze: any;
-declare var util: any;
-declare var inherits: any;
-declare var notEnumerableProp: any;
-declare function subError(nameProperty: any, defaultMessage: any): (message: any) => any;
-declare var _TypeError: any, _RangeError: any;
-declare var Warning: (message: any) => any;
-declare var CancellationError: (message: any) => any;
-declare var TimeoutError: (message: any) => any;
-declare var AggregateError: (message: any) => any;
-declare var methods: string[];
-declare var level: number;
-declare function OperationalError(message: any): any;
-declare var errorTypes: any;
+export {};

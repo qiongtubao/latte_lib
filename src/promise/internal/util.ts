@@ -1,9 +1,9 @@
 "use strict";
 var es5 = require("./es5.js");
 var canEvaluate = typeof navigator == "undefined";
-var haveGetters = (function(){
+var haveGetters = (function () {
     try {
-        var o = {};
+        var o: any = {};
         es5.defineProperty(o, "f", {
             get: function () {
                 return 3;
@@ -17,7 +17,7 @@ var haveGetters = (function(){
 
 })();
 
-var errorObj = {e: {}};
+var errorObj = { e: {} };
 var tryCatchTarget;
 function tryCatcher() {
     try {
@@ -34,7 +34,7 @@ function tryCatch(fn) {
     return tryCatcher;
 }
 
-var inherits = function(Child, Parent) {
+var inherits = function (Child, Parent) {
     var hasProp = {}.hasOwnProperty;
 
     function T() {
@@ -42,8 +42,8 @@ var inherits = function(Child, Parent) {
         this.constructor$ = Parent;
         for (var propertyName in Parent.prototype) {
             if (hasProp.call(Parent.prototype, propertyName) &&
-                propertyName.charAt(propertyName.length-1) !== "$"
-           ) {
+                propertyName.charAt(propertyName.length - 1) !== "$"
+            ) {
                 this[propertyName + "$"] = Parent.prototype[propertyName];
             }
         }
@@ -87,8 +87,8 @@ function getDataPropertyOrDefault(obj, key, defaultValue) {
 
         if (desc != null) {
             return desc.get == null && desc.set == null
-                    ? desc.value
-                    : defaultValue;
+                ? desc.value
+                : defaultValue;
         }
     } else {
         return {}.hasOwnProperty.call(obj, key) ? obj[key] : undefined;
@@ -111,14 +111,14 @@ function thrower(r) {
     throw r;
 }
 
-var inheritedDataKeys = (function() {
+var inheritedDataKeys = (function () {
     var excludedPrototypes = [
         Array.prototype,
         Object.prototype,
         Function.prototype
     ];
 
-    var isExcludedProto = function(val) {
+    var isExcludedProto = function (val) {
         for (var i = 0; i < excludedPrototypes.length; ++i) {
             if (excludedPrototypes[i] === val) {
                 return true;
@@ -129,7 +129,7 @@ var inheritedDataKeys = (function() {
 
     if (es5.isES5) {
         var getKeys = Object.getOwnPropertyNames;
-        return function(obj) {
+        return function (obj) {
             var ret = [];
             var visitedKeys = Object.create(null);
             while (obj != null && !isExcludedProto(obj)) {
@@ -154,7 +154,7 @@ var inheritedDataKeys = (function() {
         };
     } else {
         var hasProp = {}.hasOwnProperty;
-        return function(obj) {
+        return function (obj) {
             if (isExcludedProto(obj)) return [];
             var ret = [];
 
@@ -202,7 +202,7 @@ function isClass(fn) {
 
 function toFastProperties(obj) {
     /*jshint -W027,-W055,-W031*/
-    function f() {}
+    function f() { }
     f.prototype = obj;
     var l = 8;
     while (l--) new f();
@@ -217,7 +217,7 @@ function isIdentifier(str) {
 
 function filledRange(count, prefix, suffix) {
     var ret = new Array(count);
-    for(var i = 0; i < count; ++i) {
+    for (var i = 0; i < count; ++i) {
         ret[i] = prefix + i + suffix;
     }
     return ret;
@@ -235,7 +235,7 @@ function markAsOriginatingFromRejection(e) {
     try {
         notEnumerableProp(e, "isOperational", true);
     }
-    catch(ignore) {}
+    catch (ignore) { }
 }
 
 function originatesFromRejection(e) {
@@ -248,15 +248,15 @@ function canAttachTrace(obj) {
     return obj instanceof Error && es5.propertyIsWritable(obj, "stack");
 }
 
-var ensureErrorObject = (function() {
+var ensureErrorObject = (function () {
     if (!("stack" in new Error())) {
-        return function(value) {
+        return function (value) {
             if (canAttachTrace(value)) return value;
-            try {throw new Error(safeToString(value));}
-            catch(err) {return err;}
+            try { throw new Error(safeToString(value)); }
+            catch (err) { return err; }
         };
     } else {
-        return function(value) {
+        return function (value) {
             if (canAttachTrace(value)) return value;
             return new Error(safeToString(value));
         };
@@ -274,12 +274,12 @@ function copyDescriptors(from, to, filter) {
         if (filter(key)) {
             try {
                 es5.defineProperty(to, key, es5.getDescriptor(from, key));
-            } catch (ignore) {}
+            } catch (ignore) { }
         }
     }
 }
 
-var ret = {
+var ret: any = {
     isClass: isClass,
     isIdentifier: isIdentifier,
     inheritedDataKeys: inheritedDataKeys,
@@ -306,16 +306,16 @@ var ret = {
     classString: classString,
     copyDescriptors: copyDescriptors,
     hasDevTools: typeof chrome !== "undefined" && chrome &&
-                 typeof chrome.loadTimes === "function",
+        typeof chrome.loadTimes === "function",
     isNode: typeof process !== "undefined" &&
         classString(process).toLowerCase() === "[object process]"
 };
-ret.isRecentNode = ret.isNode && (function() {
+ret.isRecentNode = ret.isNode && (function () {
     var version = process.versions.node.split(".").map(Number);
     return (version[0] === 0 && version[1] > 10) || (version[0] > 0);
 })();
 
 if (ret.isNode) ret.toFastProperties(process);
 
-try {throw new Error(); } catch (e) {ret.lastLineError = e;}
+try { throw new Error(); } catch (e) { ret.lastLineError = e; }
 module.exports = ret;

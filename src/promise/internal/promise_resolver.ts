@@ -1,28 +1,29 @@
 "use strict";
-var util = require("./util.js");
-var maybeWrapAsError = util.maybeWrapAsError;
-var errors = require("./errors.js");
-var TimeoutError = errors.TimeoutError;
-var OperationalError = errors.OperationalError;
-var haveGetters = util.haveGetters;
-var es5 = require("./es5.js");
+// let util = require("./util.js");
+import * as util from "./util"
+let maybeWrapAsError = util.maybeWrapAsError;
+let errors = require("./errors.js");
+let TimeoutError = errors.TimeoutError;
+let OperationalError = errors.OperationalError;
+let haveGetters = util.haveGetters;
+let es5 = require("./es5.js");
 
 function isUntypedError(obj) {
     return obj instanceof Error &&
         es5.getPrototypeOf(obj) === Error.prototype;
 }
 
-var rErrorKey = /^(?:name|message|stack|cause)$/;
+let rErrorKey = /^(?:name|message|stack|cause)$/;
 function wrapAsOperationalError(obj) {
-    var ret;
+    let ret;
     if (isUntypedError(obj)) {
         ret = new OperationalError(obj);
         ret.name = obj.name;
         ret.message = obj.message;
         ret.stack = obj.stack;
-        var keys = es5.keys(obj);
-        for (var i = 0; i < keys.length; ++i) {
-            var key = keys[i];
+        let keys = es5.keys(obj);
+        for (let i = 0; i < keys.length; ++i) {
+            let key = keys[i];
             if (!rErrorKey.test(key)) {
                 ret[key] = obj[key];
             }
@@ -34,15 +35,15 @@ function wrapAsOperationalError(obj) {
 }
 
 function nodebackForPromise(promise) {
-    return function(err, value) {
+    return function (err, value) {
         if (promise === null) return;
 
         if (err) {
-            var wrapped = wrapAsOperationalError(maybeWrapAsError(err));
+            let wrapped = wrapAsOperationalError(maybeWrapAsError(err));
             promise._attachExtraTrace(wrapped);
             promise._reject(wrapped);
         } else if (arguments.length > 2) {
-            var $_len = arguments.length;var args = new Array($_len - 1); for(var $_i = 1; $_i < $_len; ++$_i) {args[$_i - 1] = arguments[$_i];}
+            let $_len = arguments.length; let args = new Array($_len - 1); for (let $_i = 1; $_i < $_len; ++$_i) { args[$_i - 1] = arguments[$_i]; }
             promise._fulfill(args);
         } else {
             promise._fulfill(value);
@@ -53,7 +54,7 @@ function nodebackForPromise(promise) {
 }
 
 
-var PromiseResolver;
+let PromiseResolver;
 if (!haveGetters) {
     PromiseResolver = function (promise) {
         this.promise = promise;
@@ -67,8 +68,8 @@ else {
     };
 }
 if (haveGetters) {
-    var prop = {
-        get: function() {
+    let prop = {
+        get: function () {
             return nodebackForPromise(this.promise);
         }
     };
@@ -83,12 +84,12 @@ PromiseResolver.prototype.toString = function () {
 };
 
 PromiseResolver.prototype.resolve =
-PromiseResolver.prototype.fulfill = function (value) {
-    if (!(this instanceof PromiseResolver)) {
-        throw new TypeError("Illegal invocation, resolver resolve/reject must be called within a resolver context. Consider using the promise constructor instead.\u000a\u000a    See http://goo.gl/sdkXL9\u000a");
-    }
-    this.promise._resolveCallback(value);
-};
+    PromiseResolver.prototype.fulfill = function (value) {
+        if (!(this instanceof PromiseResolver)) {
+            throw new TypeError("Illegal invocation, resolver resolve/reject must be called within a resolver context. Consider using the promise constructor instead.\u000a\u000a    See http://goo.gl/sdkXL9\u000a");
+        }
+        this.promise._resolveCallback(value);
+    };
 
 PromiseResolver.prototype.reject = function (reason) {
     if (!(this instanceof PromiseResolver)) {

@@ -24,18 +24,18 @@ Queue.prototype._pushOne = function (arg) {
     this._length = length + 1;
 };
 
-Queue.prototype._unshiftOne = function(value) {
+Queue.prototype._unshiftOne = function (value) {
     var capacity = this._capacity;
     this._checkCapacity(this.length() + 1);
     var front = this._front;
-    var i = (((( front - 1 ) &
-                    ( capacity - 1) ) ^ capacity ) - capacity );
+    var i = ((((front - 1) &
+        (capacity - 1)) ^ capacity) - capacity);
     this[i] = value;
     this._front = i;
     this._length = this.length() + 1;
 };
 
-Queue.prototype.unshift = function(fn, receiver, arg) {
+Queue.prototype.unshift = function (fn, receiver, arg) {
     this._unshiftOne(arg);
     this._unshiftOne(receiver);
     this._unshiftOne(fn);
@@ -87,4 +87,4 @@ Queue.prototype._resizeTo = function (capacity) {
     arrayMove(this, 0, this, oldCapacity, moveItemsCount);
 };
 
-module.exports = Queue;
+export default Queue;

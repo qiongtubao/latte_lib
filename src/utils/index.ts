@@ -76,8 +76,8 @@ let inherits = (...args) => {
 }
 let nextTick = (() => {
   if (!isNode || !(process.nextTick)) {
-    if (window && typeof window.setImmediate === "function") {
-      return window.setImmediate;
+    if (window && typeof (<any>window).setImmediate === "function") {
+      return (<any>window).setImmediate;
     } else {
       return function (fn) {
         setTimeout(fn, 0);
@@ -92,7 +92,7 @@ let isObject = (obj): boolean => {
   if (!obj) { return false; }
   return obj.constructor == Object;
 }
-let noop = () => { }
+let noop = (...args) => { }
 let forOwn = (object, iteratee) => {
   object = Object(object)
   Object.keys(object).forEach((key) => iteratee(object[key], key, object))

@@ -5,6 +5,7 @@
  * Module of mixed-in functions shared between node and client code
  */
 import utils from '../../utils/index'
+import Promise from "../../promise"
 let isObject = utils.isObject;
 
 /**
@@ -32,7 +33,7 @@ function RequestBase(obj) {
  */
 
 function mixin(obj) {
-  for (var key in RequestBase.prototype) {
+  for (let key in RequestBase.prototype) {
     obj[key] = RequestBase.prototype[key];
   }
   return obj;
@@ -124,7 +125,7 @@ RequestBase.prototype.timeout = function timeout(options) {
     return this;
   }
 
-  for (var option in options) {
+  for (let option in options) {
     switch (option) {
       case 'deadline':
         this._timeout = options.deadline;
@@ -160,7 +161,7 @@ RequestBase.prototype.retry = function retry(count, fn) {
   return this;
 };
 
-var ERROR_CODES = [
+let ERROR_CODES = [
   'ECONNRESET',
   'ETIMEDOUT',
   'EADDRINFO',
@@ -181,7 +182,7 @@ RequestBase.prototype._shouldRetry = function (err, res) {
   }
   if (this._retryCallback) {
     try {
-      var override = this._retryCallback(err, res);
+      let override = this._retryCallback(err, res);
       if (override === true) return true;
       if (override === false) return false;
       // undefined falls back to defaults
@@ -232,7 +233,7 @@ RequestBase.prototype._retry = function () {
 
 RequestBase.prototype.then = function then(resolve, reject) {
   if (!this._fullfilledPromise) {
-    var self = this;
+    let self = this;
     if (this._endCalled) {
       console.warn("Warning: superagent request was sent twice, because both .end() and .then() were called. Never call .end() if you use promises");
     }
@@ -327,7 +328,7 @@ RequestBase.prototype.getHeader = RequestBase.prototype.get;
 
 RequestBase.prototype.set = function (field, val) {
   if (isObject(field)) {
-    for (var key in field) {
+    for (let key in field) {
       this.set(key, field[key]);
     }
     return this;
@@ -385,14 +386,14 @@ RequestBase.prototype.field = function (name, val) {
   }
 
   if (isObject(name)) {
-    for (var key in name) {
+    for (let key in name) {
       this.field(key, name[key]);
     }
     return this;
   }
 
   if (Array.isArray(val)) {
-    for (var i in val) {
+    for (let i in val) {
       this.field(name, val[i]);
     }
     return this;
@@ -550,8 +551,8 @@ RequestBase.prototype.toJSON = function () {
  */
 
 RequestBase.prototype.send = function (data) {
-  var isObj = isObject(data);
-  var type = this._header['content-type'];
+  let isObj = isObject(data);
+  let type = this._header['content-type'];
 
   if (this._formData) {
     throw new Error(".send() can't be used if .attach() or .field() is used. Please use only .send() or only .field() & .attach()");
@@ -569,7 +570,7 @@ RequestBase.prototype.send = function (data) {
 
   // merge
   if (isObj && isObject(this._data)) {
-    for (var key in data) {
+    for (let key in data) {
       this._data[key] = data[key];
     }
   } else if ('string' == typeof data) {
@@ -636,16 +637,16 @@ RequestBase.prototype.sortQuery = function (sort) {
  * @api private
  */
 RequestBase.prototype._finalizeQueryString = function () {
-  var query = this._query.join('&');
+  let query = this._query.join('&');
   if (query) {
     this.url += (this.url.indexOf('?') >= 0 ? '&' : '?') + query;
   }
   this._query.length = 0; // Makes the call idempotent
 
   if (this._sort) {
-    var index = this.url.indexOf('?');
+    let index = this.url.indexOf('?');
     if (index >= 0) {
-      var queryArr = this.url.substring(index + 1).split('&');
+      let queryArr = this.url.substring(index + 1).split('&');
       if ('function' === typeof this._sort) {
         queryArr.sort(this._sort);
       } else {
@@ -669,7 +670,7 @@ RequestBase.prototype._timeoutError = function (reason, timeout, errno) {
   if (this._aborted) {
     return;
   }
-  var err = new Error(reason + timeout + 'ms exceeded');
+  let err: any = new Error(reason + timeout + 'ms exceeded');
   err.timeout = timeout;
   err.code = 'ECONNABORTED';
   err.errno = errno;
@@ -679,7 +680,7 @@ RequestBase.prototype._timeoutError = function (reason, timeout, errno) {
 };
 
 RequestBase.prototype._setTimeouts = function () {
-  var self = this;
+  let self = this;
 
   // deadline
   if (this._timeout && !this._timer) {

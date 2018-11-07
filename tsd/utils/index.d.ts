@@ -3,7 +3,7 @@ declare const _default: {
     isNode: boolean;
     extends: (...args: any[]) => void;
     inherits: (...args: any[]) => void;
-    nextTick: (fn: any) => void;
+    nextTick: any;
     copy: (data: any) => any;
     isArray: any;
     isObject: (obj: any) => boolean;
@@ -24,6 +24,6 @@ declare const _default: {
     jsonForEach: (data: any, iterator: any) => void;
     last: (array: any[]) => any;
     undefineds: (array: any[]) => any[];
-    noop: () => void;
+    noop: (...args: any[]) => void;
 };
 export default _default;

@@ -8,7 +8,7 @@ import setImmediate from './setImmediate';
 import DLL from './DoublyLinkedList';
 import wrapAsync from './wrapAsync';
 
-export default function queue(worker, concurrency, payload) {
+export default function queue(worker, concurrency, payload?) {
     if (concurrency == null) {
         concurrency = 1;
     }

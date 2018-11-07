@@ -2,7 +2,7 @@
  * Root reference for iframes.
  */
 
-var root;
+let root;
 if (typeof window !== 'undefined') { // Browser window
   root = window;
 } else if (typeof self !== 'undefined') { // Web Worker
@@ -14,13 +14,13 @@ if (typeof window !== 'undefined') { // Browser window
   root = this;
 }
 
-//var Emitter = require('component-emitter');
-var Events = require('../../events').default;
-var RequestBase = require('./request-base');
+//let Emitter = require('component-emitter');
+let Events = require('../../events').default;
+let RequestBase = require('./request-base');
 import utils from '../../utils/index'
 let isObject = utils.isObject;
-var ResponseBase = require('./response-base');
-var Agent = require('./agent-base');
+let ResponseBase = require('./response-base');
+let Agent = require('./agent-base');
 
 /**
  * Noop.
@@ -32,7 +32,7 @@ function noop() { };
  * Expose `request`.
  */
 
-var request = exports = module.exports = function (method, url) {
+let request: any = exports = module.exports = function (method, url) {
   // callback
   if ('function' == typeof url) {
     return new exports.Request('GET', method).end(url);
@@ -74,7 +74,7 @@ request.getXHR = function () {
  * @api private
  */
 
-var trim = ''.trim
+let trim = ''.trim
   ? function (s) { return s.trim(); }
   : function (s) { return s.replace(/(^\s*|\s*$)/g, ''); };
 
@@ -88,8 +88,8 @@ var trim = ''.trim
 
 function serialize(obj) {
   if (!isObject(obj)) return obj;
-  var pairs = [];
-  for (var key in obj) {
+  let pairs = [];
+  for (let key in obj) {
     pushEncodedKeyValuePair(pairs, key, obj[key]);
   }
   return pairs.join('&');
@@ -111,7 +111,7 @@ function pushEncodedKeyValuePair(pairs, key, val) {
         pushEncodedKeyValuePair(pairs, key, v);
       });
     } else if (isObject(val)) {
-      for (var subkey in val) {
+      for (let subkey in val) {
         pushEncodedKeyValuePair(pairs, key + '[' + subkey + ']', val[subkey]);
       }
     } else {
@@ -138,12 +138,12 @@ request.serializeObject = serialize;
   */
 
 function parseString(str) {
-  var obj = {};
-  var pairs = str.split('&');
-  var pair;
-  var pos;
+  let obj = {};
+  let pairs = str.split('&');
+  let pair;
+  let pos;
 
-  for (var i = 0, len = pairs.length; i < len; ++i) {
+  for (let i = 0, len = pairs.length; i < len; ++i) {
     pair = pairs[i];
     pos = pair.indexOf('=');
     if (pos == -1) {
@@ -217,14 +217,14 @@ request.parse = {
  */
 
 function parseHeader(str) {
-  var lines = str.split(/\r?\n/);
-  var fields = {};
-  var index;
-  var line;
-  var field;
-  var val;
+  let lines = str.split(/\r?\n/);
+  let fields = {};
+  let index;
+  let line;
+  let field;
+  let val;
 
-  for (var i = 0, len = lines.length; i < len; ++i) {
+  for (let i = 0, len = lines.length; i < len; ++i) {
     line = lines[i];
     index = line.indexOf(':');
     if (index === -1) { // could be empty line, just skip it
@@ -306,7 +306,7 @@ function Response(req) {
     ? this.xhr.responseText
     : null;
   this.statusText = this.req.xhr.statusText;
-  var status = this.xhr.status;
+  let status = this.xhr.status;
   // handle IE9 bug: http://stackoverflow.com/questions/10046972/msie-returns-status-code-of-1223-for-ajax-request
   if (status === 1223) {
     status = 204;
@@ -342,7 +342,7 @@ ResponseBase(Response.prototype);
  */
 
 Response.prototype._parseBody = function (str) {
-  var parse = request.parse[this.type];
+  let parse = request.parse[this.type];
   if (this.req._parser) {
     return this.req._parser(this, str);
   }
@@ -362,12 +362,12 @@ Response.prototype._parseBody = function (str) {
  */
 
 Response.prototype.toError = function () {
-  var req = this.req;
-  var method = req.method;
-  var url = req.url;
+  let req = this.req;
+  let method = req.method;
+  let url = req.url;
 
-  var msg = 'cannot ' + method + ' ' + url + ' (' + this.status + ')';
-  var err = new Error(msg);
+  let msg = 'cannot ' + method + ' ' + url + ' (' + this.status + ')';
+  let err: any = new Error(msg);
   err.status = this.status;
   err.method = method;
   err.url = url;
@@ -390,15 +390,15 @@ request.Response = Response;
  */
 
 function Request(method, url) {
-  var self = this;
+  let self = this;
   this._query = this._query || [];
   this.method = method;
   this.url = url;
   this.header = {}; // preserves header name case
   this._header = {}; // coerces header names to lowercase
   this.on('end', function () {
-    var err = null;
-    var res = null;
+    let err = null;
+    let res = null;
 
     try {
       res = new Response(self);
@@ -423,7 +423,7 @@ function Request(method, url) {
 
     self.emit('response', res);
 
-    var new_err;
+    let new_err;
     try {
       if (!self._isResponseOK(res)) {
         new_err = new Error(res.statusText || 'Unsuccessful HTTP response');
@@ -526,7 +526,7 @@ Request.prototype.auth = function (user, pass, options) {
     };
   }
 
-  var encoder = function (string) {
+  let encoder = function (string) {
     if ('function' === typeof btoa) {
       return btoa(string);
     }
@@ -605,7 +605,7 @@ Request.prototype.callback = function (err, res) {
     return this._retry();
   }
 
-  var fn = this._callback;
+  let fn = this._callback;
   this.clearTimeout();
 
   if (err) {
@@ -623,7 +623,7 @@ Request.prototype.callback = function (err, res) {
  */
 
 Request.prototype.crossDomainError = function () {
-  var err = new Error('Request has been terminated\nPossible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.');
+  let err: any = new Error('Request has been terminated\nPossible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.');
   err.crossDomain = true;
 
   err.status = this.status;
@@ -682,15 +682,15 @@ Request.prototype.end = function (fn) {
 };
 
 Request.prototype._end = function () {
-  var self = this;
-  var xhr = (this.xhr = request.getXHR());
-  var data = this._formData || this._data;
+  let self = this;
+  let xhr = (this.xhr = request.getXHR());
+  let data = this._formData || this._data;
 
   this._setTimeouts();
 
   // state change
   xhr.onreadystatechange = function () {
-    var readyState = xhr.readyState;
+    let readyState = xhr.readyState;
     if (readyState >= 2 && self._responseTimeoutTimer) {
       clearTimeout(self._responseTimeoutTimer);
     }
@@ -700,7 +700,7 @@ Request.prototype._end = function () {
 
     // In IE9, reads to any property (e.g. status) off of an aborted XHR will
     // result in the error "Could not complete the operation due to error c00c023f"
-    var status;
+    let status;
     try { status = xhr.status } catch (e) { status = 0; }
 
     if (!status) {
@@ -711,7 +711,7 @@ Request.prototype._end = function () {
   };
 
   // progress
-  var handleProgress = function (direction, e) {
+  let handleProgress = function (direction, e) {
     if (e.total > 0) {
       e.percent = e.loaded / e.total * 100;
     }
@@ -749,8 +749,8 @@ Request.prototype._end = function () {
   // body
   if (!this._formData && 'GET' != this.method && 'HEAD' != this.method && 'string' != typeof data && !this._isHost(data)) {
     // serialize stuff
-    var contentType = this._header['content-type'];
-    var serialize = this._serializer || request.serialize[contentType ? contentType.split(';')[0] : ''];
+    let contentType = this._header['content-type'];
+    let serialize = this._serializer || request.serialize[contentType ? contentType.split(';')[0] : ''];
     if (!serialize && isJSON(contentType)) {
       serialize = request.serialize['application/json'];
     }
@@ -758,7 +758,7 @@ Request.prototype._end = function () {
   }
 
   // set header fields
-  for (var field in this.header) {
+  for (let field in this.header) {
     if (null == this.header[field]) continue;
 
     if (this.header.hasOwnProperty(field))
@@ -784,7 +784,7 @@ request.agent = function () {
 
 ["GET", "POST", "OPTIONS", "PATCH", "PUT", "DELETE"].forEach(function (method) {
   Agent.prototype[method.toLowerCase()] = function (url, fn) {
-    var req = new request.Request(method, url);
+    let req = new request.Request(method, url);
     this._setDefaults(req);
     if (fn) {
       req.end(fn);
@@ -806,7 +806,7 @@ Agent.prototype.del = Agent.prototype['delete'];
  */
 
 request.get = function (url, data, fn) {
-  var req = request('GET', url);
+  let req = request('GET', url);
   if ('function' == typeof data) (fn = data), (data = null);
   if (data) req.query(data);
   if (fn) req.end(fn);
@@ -824,7 +824,7 @@ request.get = function (url, data, fn) {
  */
 
 request.head = function (url, data, fn) {
-  var req = request('HEAD', url);
+  let req = request('HEAD', url);
   if ('function' == typeof data) (fn = data), (data = null);
   if (data) req.query(data);
   if (fn) req.end(fn);
@@ -842,7 +842,7 @@ request.head = function (url, data, fn) {
  */
 
 request.options = function (url, data, fn) {
-  var req = request('OPTIONS', url);
+  let req = request('OPTIONS', url);
   if ('function' == typeof data) (fn = data), (data = null);
   if (data) req.send(data);
   if (fn) req.end(fn);
@@ -860,7 +860,7 @@ request.options = function (url, data, fn) {
  */
 
 function del(url, data, fn) {
-  var req = request('DELETE', url);
+  let req = request('DELETE', url);
   if ('function' == typeof data) (fn = data), (data = null);
   if (data) req.send(data);
   if (fn) req.end(fn);
@@ -881,7 +881,7 @@ request['delete'] = del;
  */
 
 request.patch = function (url, data, fn) {
-  var req = request('PATCH', url);
+  let req = request('PATCH', url);
   if ('function' == typeof data) (fn = data), (data = null);
   if (data) req.send(data);
   if (fn) req.end(fn);
@@ -899,7 +899,7 @@ request.patch = function (url, data, fn) {
  */
 
 request.post = function (url, data, fn) {
-  var req = request('POST', url);
+  let req = request('POST', url);
   if ('function' == typeof data) (fn = data), (data = null);
   if (data) req.send(data);
   if (fn) req.end(fn);
@@ -917,7 +917,7 @@ request.post = function (url, data, fn) {
  */
 
 request.put = function (url, data, fn) {
-  var req = request('PUT', url);
+  let req = request('PUT', url);
   if ('function' == typeof data) (fn = data), (data = null);
   if (data) req.send(data);
   if (fn) req.end(fn);
