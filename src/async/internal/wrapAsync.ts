@@ -3,7 +3,7 @@ import asyncify from '../asyncify';
 var supportsSymbol = typeof Symbol === 'function';
 
 function isAsync(fn) {
-    return supportsSymbol && fn[Symbol.toStringTag] === 'AsyncFunction';
+    return supportsSymbol && fn[(<any>Symbol).toStringTag] === 'AsyncFunction';
 }
 
 function wrapAsync(asyncFn) {

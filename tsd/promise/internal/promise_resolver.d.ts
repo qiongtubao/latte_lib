@@ -1,12 +1,1 @@
-declare var util: any;
-declare var maybeWrapAsError: any;
-declare var errors: any;
-declare var TimeoutError: (message: any) => any;
-declare var OperationalError: any;
-declare var haveGetters: any;
-declare var es5: any;
-declare function isUntypedError(obj: any): boolean;
-declare var rErrorKey: RegExp;
-declare function wrapAsOperationalError(obj: any): any;
-declare function nodebackForPromise(promise: any): (err: any, value: any) => void;
-declare var PromiseResolver: any;
+export {};

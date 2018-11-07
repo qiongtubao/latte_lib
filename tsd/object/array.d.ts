@@ -6,7 +6,7 @@ export default class LatteArray extends LatteClass {
     addChildEvent: (key: any, value: any) => void;
     removeChildEvent: (key: any, value?: any) => void;
     length: number;
-    constructor(data: Array<any>);
+    constructor(data?: Array<any>);
     push: (o: any) => void;
     pop: () => void;
     unshift: (...args: any[]) => void;
@@ -17,5 +17,6 @@ export default class LatteArray extends LatteClass {
     map: (callback: (value: any, index?: number, array?: any[]) => void) => void;
     filter: (callback: (value: any, index?: number, array?: any[]) => boolean) => void;
     removeValue: (value: any, num?: number) => void;
+    slice(start: number, end?: number): LatteArray;
     diff: (value: any[]) => {};
 }

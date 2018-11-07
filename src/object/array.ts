@@ -75,7 +75,7 @@ export default class LatteArray extends LatteClass {
     let data = this.removeChild(0, this.data[0]);
     let oldValue = this.data.shift();
     this.emit("splice", 0, [oldValue], []);
-    this.emit("change", 0, this.data[i], oldValue);
+    this.emit("change", 0, this.data[0], oldValue);
     for (let i = 1, len = this.data.length; i < len; i++) {
       this.emit("change", i, this.data[i], this.data[i - 1]);
     }

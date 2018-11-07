@@ -1,3 +1,4 @@
+/// <reference types="node" />
 export declare var hasSetImmediate: typeof setImmediate;
 export declare var hasNextTick: boolean;
 export declare function fallback(fn: any): void;

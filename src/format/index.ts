@@ -127,5 +127,74 @@ export function templateJsonFormat(template: object, options: object): object {
   let data = templateStringFormat(templateData, options);
   return JSON.parse(data);
 }
+let repeatStr = function (str, times) {
+  var newStr = [];
+  if (times > 0) {
+    for (var i = 0; i < times; i++) {
+      newStr.push(str);
+    }
+  }
+  return newStr.join("");
+}
+function objFormat(object, level, jsonUti, isInArray?: boolean) {
+  var tab = isInArray ? repeatStr(jsonUti.t, level - 1) : "";
+  if (object === null || object === undefined) {
+    return tab + "null";
+  }
+  switch (utils.getClassName(object)) {
+    case "array":
+      var paddingTab = repeatStr(jsonUti.t, level - 1);
+      var temp = [jsonUti.n + paddingTab + "[" + jsonUti.n];
+      var tempArrValue = [];
+      for (var i = 0, len = object.length; i < len; i++) {
+        tempArrValue.push(objFormat(object[i], level + 1, jsonUti, true));
+      }
+      temp.push(tempArrValue.join("," + jsonUti.n));
+      temp.push(jsonUti.n + paddingTab + "] ");
+      return temp.join("");
+      break;
+    case "object":
+      var currentObjStrings = [];
+      for (var key in object) {
+        if (object[key] == undefined) {
+          continue;
+        }
+        let temp: any[] = [];
+        var paddingTab = repeatStr(jsonUti.t, level);
+        temp.push(paddingTab);
+        temp.push("\"" + key + "\" : ");
+        var value = object[key];
+        temp.push(objFormat(value, level + 1, jsonUti));
+        currentObjStrings.push(temp.join(""));
+      }
+      return (level > 1 && !isInArray ? jsonUti.n : "")
+        + repeatStr(jsonUti.t, level - 1) + "{" + jsonUti.n
+        + currentObjStrings.join("," + jsonUti.n)
+        + jsonUti.n + repeatStr(jsonUti.t, level - 1) + "}";
+      break;
+    case "number":
+      return tab + object.toString();
+      break;
+    case "boolean":
+      return tab + object.toString().toLowerCase();
+      break;
+    case "function":
+      return object.toString();
+      break;
+    default:
+      return tab + ("\"" + object.toString() + "\"");
+      break;
+  }
+}
+export function jsonFormat(object, jsonUti) {
+  let defaultUti = { n: "\n", t: "\t" };
+  jsonUti = (<any>Object).assign(defaultUti, jsonUti);
+  try {
+    return objFormat(object, 1, jsonUti);
+  } catch (e) {
+    throw object;
+    return JSON.stringify(object);
+  }
+}
 
-export default { templateJsonFormat, templateStringFormat, dateFormat, getDateReplace }
+export default { jsonFormat, templateJsonFormat, templateStringFormat, dateFormat, getDateReplace }

@@ -1,9 +1,10 @@
 "use strict";
-var es5 = require("./es5.js");
-var Objectfreeze = es5.freeze;
-var util = require("./util.js");
-var inherits = util.inherits;
-var notEnumerableProp = util.notEnumerableProp;
+// let es5 = require("./es5.js");
+import * as es5 from "./es5"
+let Objectfreeze = es5.freeze;
+let util = require("./util.js");
+let inherits = util.inherits;
+let notEnumerableProp = util.notEnumerableProp;
 
 function subError(nameProperty, defaultMessage) {
     function SubError(message) {
@@ -21,23 +22,23 @@ function subError(nameProperty, defaultMessage) {
     return SubError;
 }
 
-var _TypeError, _RangeError;
-var Warning = subError("Warning", "warning");
-var CancellationError = subError("CancellationError", "cancellation error");
-var TimeoutError = subError("TimeoutError", "timeout error");
-var AggregateError = subError("AggregateError", "aggregate error");
+let _TypeError, _RangeError;
+let Warning = subError("Warning", "warning");
+let CancellationError = subError("CancellationError", "cancellation error");
+let TimeoutError = subError("TimeoutError", "timeout error");
+let AggregateError = subError("AggregateError", "aggregate error");
 try {
     _TypeError = TypeError;
     _RangeError = RangeError;
-} catch(e) {
+} catch (e) {
     _TypeError = subError("TypeError", "type error");
     _RangeError = subError("RangeError", "range error");
 }
 
-var methods = ("join pop push shift unshift slice filter forEach some " +
+let methods = ("join pop push shift unshift slice filter forEach some " +
     "every map indexOf lastIndexOf reduce reduceRight sort reverse").split(" ");
 
-for (var i = 0; i < methods.length; ++i) {
+for (let i = 0; i < methods.length; ++i) {
     if (typeof Array.prototype[methods[i]] === "function") {
         AggregateError.prototype[methods[i]] = Array.prototype[methods[i]];
     }
@@ -50,16 +51,16 @@ es5.defineProperty(AggregateError.prototype, "length", {
     enumerable: true
 });
 AggregateError.prototype["isOperational"] = true;
-var level = 0;
-AggregateError.prototype.toString = function() {
-    var indent = Array(level * 4 + 1).join(" ");
-    var ret = "\n" + indent + "AggregateError of:" + "\n";
+let level = 0;
+AggregateError.prototype.toString = function () {
+    let indent = Array(level * 4 + 1).join(" ");
+    let ret = "\n" + indent + "AggregateError of:" + "\n";
     level++;
     indent = Array(level * 4 + 1).join(" ");
-    for (var i = 0; i < this.length; ++i) {
-        var str = this[i] === this ? "[Circular AggregateError]" : this[i] + "";
-        var lines = str.split("\n");
-        for (var j = 0; j < lines.length; ++j) {
+    for (let i = 0; i < this.length; ++i) {
+        let str = this[i] === this ? "[Circular AggregateError]" : this[i] + "";
+        let lines = str.split("\n");
+        for (let j = 0; j < lines.length; ++j) {
             lines[j] = indent + lines[j];
         }
         str = lines.join("\n");
@@ -87,7 +88,7 @@ function OperationalError(message) {
 }
 inherits(OperationalError, Error);
 
-var errorTypes = Error["__BluebirdErrorTypes__"];
+let errorTypes = Error["__BluebirdErrorTypes__"];
 if (!errorTypes) {
     errorTypes = Objectfreeze({
         CancellationError: CancellationError,

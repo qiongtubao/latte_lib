@@ -1,13 +1,13 @@
-export default function queue(worker: any, concurrency: any, payload: any): {
+export default function queue(worker: any, concurrency: any, payload?: any): {
     _tasks: any;
     concurrency: any;
     payload: any;
-    saturated: () => void;
-    unsaturated: () => void;
+    saturated: (...args: any[]) => void;
+    unsaturated: (...args: any[]) => void;
     buffer: number;
-    empty: () => void;
-    drain: () => void;
-    error: () => void;
+    empty: (...args: any[]) => void;
+    drain: (...args: any[]) => void;
+    error: (...args: any[]) => void;
     started: boolean;
     paused: boolean;
     push: (data: any, callback: any) => void;
