@@ -18,7 +18,7 @@
 		"ts-node": "*",
 		"typescript": "*",
 		"should": "*",
-		"@types/jest": "*"
+		"@types/mocha": "*"
 	}
 	
 }

@@ -1,7 +1,7 @@
 
 
-import { expect } from 'chai'
-// import 'mocha'
+// import { expect } from 'chai'
+import 'mocha'
 import { LatteObject } from '../../src/object/object'
 describe('object', () => {
     it('create', () => {
