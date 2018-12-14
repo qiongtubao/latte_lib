@@ -9,6 +9,9 @@
 		"type":"git",
 		"url":"https://github.com/qiongtubao/latte_lib.git"
 	},
+	"scripts": {
+		"test:all":  "latte mocha -r ts-node/register ./tests/object/*test.ts"
+	},
 	"dependencies": {
 		"@types/node": "*"
 	},
