@@ -1,0 +1,32 @@
+{
+      "compilerOptions": {
+            "target": "esnext",
+            "noImplicitAny": false,
+            "module": "commonjs",
+            "removeComments": true,
+            "sourceMap": false,
+            "outDir": "lib",
+            "moduleResolution": "node",
+            "declaration": true,
+            "declarationDir": "tsd",
+            "experimentalDecorators": true,
+            "lib": [
+                  "esnext",
+                  "esnext.array",
+                  "esnext.asynciterable",
+                  "esnext.intl",
+                  "esnext.symbol",
+                  "scripthost",
+                  "es2015.promise",
+                  "es2015.proxy",
+                  "dom"
+            ]
+      },
+      "include": [
+            "src"
+      ],
+      "exclude": [],
+      "files": [
+            "./src/tsd/global.d.ts"
+      ]
+}
