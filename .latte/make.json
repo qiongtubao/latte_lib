@@ -1,0 +1,59 @@
+{
+  "main": {
+    "clean": "$clean",
+    "make": [
+      "clean",
+      "$make"
+    ]
+  },
+  "clean": {
+    "remove": {
+      "method": "remove",
+      "params": [
+        {
+          "path": "./latte_lib.js"
+        },
+        {
+          "path": "./latte_lib.mini.js"
+        }
+      ]
+    }
+  },
+  "make": {
+    "tsc": {
+      "method": "ts",
+      "params": [
+        {
+          "inPath": "./src/index.ts",
+          "outPath": "./lib"
+        }
+      ]
+    },
+    "mergeJs": [
+      "tsc",
+      {
+        "method": "mergeJs",
+        "params": [
+          {
+            "inPath": "./lib",
+            "outPath": "./latte_lib.js",
+            "alias": "latte_lib",
+            "root": true
+          }
+        ]
+      }
+    ],
+    "miniJs": [
+      "mergeJs",
+      {
+        "method": "miniJs",
+        "params": [
+          {
+            "inPath": "./latte_lib.js",
+            "outPath": "./latte_lib.mini.js"
+          }
+        ]
+      }
+    ]
+  }
+}
